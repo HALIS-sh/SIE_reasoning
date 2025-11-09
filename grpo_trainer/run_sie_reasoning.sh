@@ -102,7 +102,7 @@
 set -euo pipefail
 set -x
 
-export WANDB_API_KEY="6159ab5867c053d3ac643f895c608add2dd04f8c"
+export WANDB_API_KEY="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
 ########################################
 # 0. 路径配置
