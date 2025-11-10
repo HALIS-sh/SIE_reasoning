@@ -496,6 +496,40 @@ class SIERewardFunction:
             return []
         return self.MID_RE.findall(text)
 
+    def _normalize_gt_to_str(self, ground_truth: Any) -> str:
+        """
+        把各种奇怪的 ground_truth 形式都变成一个字符串：
+        - "xxx"
+        - {"target": ["xxx", "yyy"]}
+        - {"target": "xxx"}
+        - ["xxx"]
+        都会最后变成 "xxx" 这一类
+        """
+        if ground_truth is None:
+            return ""
+        # 已经是字符串
+        if isinstance(ground_truth, str):
+            return ground_truth
+        # 是 dict 并且有 target
+        if isinstance(ground_truth, dict):
+            tgt = ground_truth.get("target") or ground_truth.get("answer")
+            if isinstance(tgt, str):
+                return tgt
+            if isinstance(tgt, list) and tgt:
+                return str(tgt[0])
+            # 实在不行就转成字符串
+            return str(ground_truth)
+        # 是 list
+        if isinstance(ground_truth, list) and ground_truth:
+            # 取第一个
+            if isinstance(ground_truth[0], str):
+                return ground_truth[0]
+            if isinstance(ground_truth[0], dict):
+                # 递归一下
+                return self._normalize_gt_to_str(ground_truth[0])
+        # 兜底
+        return str(ground_truth)
+
     # ----------------- core reward ----------------- #
     def compute_reward(
         self,
@@ -527,11 +561,14 @@ class SIERewardFunction:
 
         # 2) 没有用 mid 成功的话，再走你原来的“文本精确匹配”
         if not matched_by_mid:
+            gt_str = self._normalize_gt_to_str(ground_truth)
             # 归一化 GT
             if self.normalize_entities:
-                gt_norm = (ground_truth or "").lower().strip()
+                # gt_norm = (ground_truth or "").lower().strip()
+                gt_norm = gt_str.lower().strip()
             else:
-                gt_norm = (ground_truth or "").strip()
+                # gt_norm = (ground_truth or "").strip()
+                gt_norm = gt_str.strip()
 
             # 文本精确匹配
             if pred_answer and pred_answer == gt_norm:

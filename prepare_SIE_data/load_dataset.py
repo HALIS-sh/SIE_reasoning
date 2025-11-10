@@ -18,7 +18,7 @@ from datasets import load_dataset
 
 CWQ_NAME = "rmanluo/RoG-cwq"
 WEBQSP_NAME = "rmanluo/RoG-webqsp"
-DEFAULT_OUTDIR = "/data/wenhesun/datasets"
+DEFAULT_OUTDIR = "/data/sunwenhe/datasets"
 
 
 def ensure_dir(path: str):

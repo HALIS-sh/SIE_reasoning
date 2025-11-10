@@ -191,13 +191,13 @@ def main():
     parser.add_argument(
         "--indir",
         type=str,
-        default="/data/wenhesun/datasets",
+        default="/data/sunwenhe/datasets",
         help="如果不指定 infile，就用这个目录 + 数据集名来推文件名"
     )
     parser.add_argument(
         "--outdir",
         type=str,
-        default="/data/wenhesun/datasets",
+        default="/data/sunwenhe/datasets",
         help="如果不指定 outfile，就写到这个目录"
     )
     parser.add_argument(
