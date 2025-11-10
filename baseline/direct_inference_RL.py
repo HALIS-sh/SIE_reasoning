@@ -453,6 +453,61 @@ def load_data(jsonl_path):
     return data
 
 
+# def load_data(jsonl_path):
+#     data = []
+#     with open(jsonl_path, "r", encoding="utf-8") as f:
+#         for line in f:
+#             item = json.loads(line)
+
+#             # 1) 先按常规字段取
+#             q = (
+#                 item.get("question")
+#                 or item.get("query")
+#                 or item.get("input")
+#                 or item.get("extra_info", {}).get("question")
+#             )
+
+#             # 2) 如果还没有，就看看是不是 MATH 这种只给了 prompt 的
+#             if q is None and "prompt" in item and isinstance(item["prompt"], list) and item["prompt"]:
+#                 # 通常最后一条 user 就是要问的问题
+#                 q = item["prompt"][-1].get("content", "").strip()
+
+#             # structured info 默认空
+#             si = item.get("structured_context") or ""
+
+#             # 3) 答案
+#             gt = (
+#                 item.get("answer")
+#                 or item.get("label")
+#                 or item.get("extra_info", {}).get("answer")
+#             )
+
+#             # SIE reward_model 结构
+#             if gt is None and "reward_model" in item:
+#                 rm = item["reward_model"]
+#                 if isinstance(rm, dict):
+#                     gt_struct = rm.get("ground_truth") or {}
+#                     if isinstance(gt_struct, dict):
+#                         tgt = gt_struct.get("target")
+#                         if isinstance(tgt, list) and tgt:
+#                             gt = tgt[0]
+#                         elif isinstance(tgt, str):
+#                             gt = tgt
+
+#             if q is None:
+#                 # 到这还没有 question，就真没法做了
+#                 continue
+
+#             data.append(
+#                 {
+#                     "question": q,
+#                     "structured_context": si,
+#                     "answer": gt or "",
+#                 }
+#             )
+#     return data
+
+
 # =============== 2. prompt =============== #
 def build_prompt(question: str, si: str, use_si: bool = True) -> str:
     parts = []
