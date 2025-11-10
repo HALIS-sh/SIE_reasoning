@@ -23,7 +23,7 @@ from datasets import load_dataset
 
 CWQ_NAME = "rmanluo/RoG-cwq"
 WEBQSP_NAME = "rmanluo/RoG-webqsp"
-DEFAULT_OUTDIR = "/data/wenhesun/datasets"
+DEFAULT_OUTDIR = "/data/sunwenhe/datasets"
 
 # 为了防 seed 里出现极端高出度，给每个 node 的“同深度路径数量”做个软上限
 MAX_PATHS_PER_NODE = 50
